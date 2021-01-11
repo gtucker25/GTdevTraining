@@ -1,0 +1,14 @@
+//Corresponds to the Get Started with Apex Trailhead challenge
+public class StringArrayTest {
+    
+    public static List<String> generateStringArray(Integer n)
+    {
+    	List<String> MyList = new List<String>();
+        for(Integer i=0;i<n;i++)
+        {
+            MyList.add('Test '+i);
+            System.debug(MyList[i]);
+        }
+    	return MyList; 
+    }    
+}
