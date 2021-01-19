@@ -1,0 +1,10 @@
+// Class for Write SOSL Queries Trailhead Challenge
+public class ContactAndLeadSearch {
+    public Static List<List<SObject>> searchContactsAndLeads(String n)
+    {
+        List<List<SObject>> Result= new List<List<SObject>>([FIND :n IN ALL FIELDS RETURNING 
+                                                Lead(id,LastName WHERE FirstName=:n OR LastName=:n), Contact(id, LastName WHERE FirstName=:n OR LastName=:n)]);
+   Return Result;
+    }
+
+}
