@@ -1,0 +1,9 @@
+//For Write SOQL Queries Trailhead challenge
+public class ContactSearch {
+    Public Static List<Contact> searchForContacts(String a, String b)
+    {
+        List<Contact> ContactList=new List<Contact>([SELECT ID,Name FROM Contact WHERE LastName = :a AND MailingPostalCode = :b]);
+       Return ContactList;  
+    }
+   
+}
