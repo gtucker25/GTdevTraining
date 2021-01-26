@@ -1,0 +1,16 @@
+//Trigger for the Bulk Apex Triggers Trailhead Challenge
+trigger ClosedOpportunityTrigger on Opportunity (before insert,after update) 
+{
+    List<Opportunity> oppsToUpdate = new List<Opportunity>([Select id, OwnerID FROM Opportunity WHERE id IN :Trigger.new]); //get Opportunities and IDs to assign to Task Later
+    List<Task> TasksToCreate = new List<Task>(); //Create Task collection for bulk Insert Later
+    for(Opportunity o: Trigger.new)
+    {
+        If(o.StageName=='Closed Won') //If Stage is Closed Won, then let's add the opp values for our new Tasks and add them to the Task collection
+        {
+            TasksToCreate.add(new Task(WhatId=o.id,
+                                      OwnerID=o.OwnerId,
+                                      Subject='Follow Up Test Task'));
+        }
+    }
+Insert TasksToCreate;
+}
