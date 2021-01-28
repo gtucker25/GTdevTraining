@@ -1,0 +1,33 @@
+//Batch Class for Dev project
+Global class UpdateContactAddressInfo implements Database.Batchable<sObject>
+{
+	Global Database.QueryLocator start(Database.BatchableContext bc)
+    {
+        return Database.getQueryLocator(
+        	'Select id,BillingStreet,BillingCity,BillingState,'+
+        	'BillingPostalCode,(Select id,MailingStreet,MailingCity,'+
+        'MailingState,MailingPostalCode from Contacts) FROM Account'+
+      	'WHERE BillingState=\'TX\'' 
+        );     
+     }
+    Global void execute(Database.BatchableContext bc,List<Account> scope)
+    {
+        List<Contact> contacts=new List<Contact>();
+        for(Account account:scope)
+        {
+            for(Contact contact:account.contacts)
+            {
+                contact.MailingStreet=account.BillingStreet;
+                contact.MailingCity=account.BillingCity;
+                contact.MailingState=account.BillingState;
+                contact.MailingPostalCode=account.BillingPostalCode;
+                contacts.add(contact);
+            }
+        }
+        update contacts;
+    }
+    Global void finish(Database.BatchableContext bc)
+    {
+        
+    }
+}
