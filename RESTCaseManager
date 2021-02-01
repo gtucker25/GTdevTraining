@@ -1,0 +1,12 @@
+//Apex REST available Class created for Dev Training
+@RestResource(urlMapping='/Cases/*')
+global with sharing class CaseManager {
+@HttpGet
+    global static Case getCasebyId()
+    {
+    RestRequest request=RestContext.request;
+    String caseID=request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
+    Case result=[Select CaseNumber, Subject, Status, Origin, Priority From Case WHERE Id=:CaseID];
+         Return result;
+    }
+}
