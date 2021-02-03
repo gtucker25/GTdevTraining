@@ -1,4 +1,4 @@
-//Apex REST available Class created for Dev Training
+//Apex REST available Class created for Dev Training... Get, Post, Delete, Put, and Patch included
 @RestResource(urlMapping='/Cases/*')
 global with sharing class CaseManager {
 @HttpGet
@@ -8,5 +8,41 @@ global with sharing class CaseManager {
     String caseID=request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
     Case result=[Select CaseNumber, Subject, Status, Origin, Priority From Case WHERE Id=:CaseID];
          Return result;
+    }
+@HttpPost    
+    global static Id createCase(String subj,String Status,String Origin, String Priority)
+    {
+        Case thisCase=new Case(Subject=subj,Status=Status,Origin=Origin,Priority=Priority);
+        Insert thisCase;
+        return thisCase.id;
+    }
+@HttpDelete
+    global static void deleteCase()
+    {
+        RestRequest request=RestContext.request;
+    String caseID=request.requestURI.substring(request.requestURI.lastIndexOf('/')+1);
+       Case thisCase= [SELECT Id from Case WHERE Id=:caseId];
+    delete thisCase;
+    }
+@HttpPut
+    global static ID upsertCase(String sub,String sta,String ori,String pri,String id)
+    {
+        Case thisCase=new Case(Id=id,Subject=sub,Status=sta,Origin=ori,Priority=pri);
+        Upsert thisCase;
+        return thisCase.Id;
+    }
+@HttpPatch
+    global static ID UpdateCaseFields()
+    {
+        RestRequest request=RestContext.request;
+        String CaseID=request.requestURI.substring(request.requestURI.lastindexof('/')+1);
+        Case thisCase=[SELECT id FROM Case WHERE id=:CaseID];
+        Map<String,Object> params= (Map<String,Object>) JSON.deserializeUntyped(request.requestBody.toString());
+        	for(String fieldName:params.keySet())
+            {
+                thisCase.put(fieldName,params.get(fieldName));
+            }
+        update thisCase;
+        return thisCase.Id;
     }
 }
