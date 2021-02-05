@@ -1,9 +1,14 @@
-//Test Class created for Get Started with Apex Unit Testing Trailhead
+//Test Class created for Get Started with Apex Unit Testing Trailhead with 100 percent Code Coverage
 @isTest
 public class TestVerifyDate { 
-    @isTest Static void TestCheckDates()
+    @isTest Static void TestCheckDates1()
     {
         Date dateresult=VerifyDate.CheckDates(Date.today(),Date.today()+23);
+            System.assertEquals(Date.today()+23, dateresult, 'Dateresult for Check Dates method test was not as expected');
+    }
+    @isTest Static void TestCheckDates2()
+    {
+        Date dateresult=VerifyDate.CheckDates(Date.today(),Date.today()+42);
             System.assertEquals(Date.today()+23, dateresult, 'Dateresult for Check Dates method test was not as expected');
     }
     @isTest Static void TestDateWithin30Days()
