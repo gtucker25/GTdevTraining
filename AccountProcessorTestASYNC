@@ -1,0 +1,54 @@
+// This test class was created for the Use Future Methods Trailhead challenge
+@isTest
+public class AccountProcessorTest {
+    
+    @isTest Static Void TestcountContacts()
+    {
+    
+        //Create Test Accounts 
+        List<Account> AccountsforTest = new List<Account>();
+        Account Acct1=new Account(Name='Test1');
+        AccountsforTest.add(Acct1);
+        Account Acct2=new Account(Name='Test2');
+        AccountsforTest.add(Acct2);
+        Account Acct3=new Account(Name='Test3');
+        AccountsforTest.add(Acct3);
+        
+        Insert AccountsforTest;
+        //Put the ids of test accounts in a list to pass to our Account Processor method
+        List<ID> IDstoPass= new List<ID>();
+        ID Acct1ID=Acct1.Id;
+        IDstoPass.add(Acct1ID);
+        ID Acct2ID=Acct2.Id;
+        IDstoPass.add(Acct2ID);
+        ID Acct3ID=Acct3.Id;
+        IDstoPass.add(Acct3ID);
+        
+        //Create Contacts related to our new test Accounts. 2 for Acct1, 1 for Acct2, 0 for Acct3 (to test the output of the Acct Processor Class)
+        List<Contact> ContactList=new List<Contact>();
+        Contact Cont1=new Contact(LastName='Test1',AccountID=Acct1.Id);
+        ContactList.add(Cont1);
+        Contact Cont2=new Contact(LastName='Testy1',AccountID=Acct1.Id);
+        ContactList.add(Cont2);
+        Contact Cont3=new Contact(LastName='Test2',AccountID=Acct2.Id);
+        ContactList.add(Cont3);
+        
+        Insert ContactList;
+        
+        Test.startTest();
+        AccountProcessor.countContacts(IDstoPass);
+        Test.stopTest();
+        
+        List<Account> TwoNumofContacts = [SELECT ID FROM Account WHERE Id = :Acct1.Id AND Number_of_Contacts__c = 2];
+        System.assertEquals(1, TwoNumofContacts.size());
+        List<Account> OneNumofContacts = [SELECT ID FROM Account WHERE Id = :Acct2.Id AND Number_of_Contacts__c = 1];
+        System.assertEquals(1, TwoNumofContacts.size());
+        List<Account> NullNumofContacts = [SELECT ID FROM Account WHERE Id = :Acct3.Id AND Number_of_Contacts__c = 0];
+        System.assertEquals(1, NullNumofContacts.size());
+
+//delete test data        
+Delete ContactList;
+Delete AccountsforTest;
+    }
+
+}
