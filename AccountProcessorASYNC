@@ -1,0 +1,17 @@
+//This class was built for the Use Future Methods Trailhead Challenge and is an example of populating a rollup field with apex 
+public class AccountProcessor {
+@Future
+    Public Static Void countContacts(List<Id> recordIDs)
+    {
+        List<Account> Accts=[SELECT Id, Name FROM Account WHERE ID IN :recordIDs];
+        
+        For(Account Acct: Accts)
+        {
+            List<Contact> Contacts=[Select Id from Contact WHERE AccountID=:Acct.Id];
+            Integer NumberofContacts = Contacts.size();
+                Acct.Number_of_Contacts__c=NumberofContacts;
+            
+        }
+    Update Accts;
+    }
+}
