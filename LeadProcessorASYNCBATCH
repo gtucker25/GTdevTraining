@@ -1,0 +1,23 @@
+// This batch apex class was created to complete the Use Batch Apex Trailhead Challenge
+public class LeadProcessor implements Database.Batchable<sObject> {
+    public Database.QueryLocator start(Database.BatchableContext bc)
+    {
+        return Database.getQueryLocator( 
+            'SELECT ID, LeadSource FROM Lead ' +
+            'Where LeadSource != \'Dreamforce\'');
+    }
+    public void execute(Database.BatchableContext bc, List<Lead> Scope)
+    {
+        List<Lead> LeadstoUpdate = new List<Lead>();
+        for(Lead Lead : scope)
+        {
+            Lead.LeadSource='Dreamforce';
+            LeadstoUpdate.add(Lead);
+        }
+    update LeadstoUpdate;
+    }
+    public void finish(Database.BatchableContext bc)
+    {
+        System.debug('Records Processed!');
+    }
+}
