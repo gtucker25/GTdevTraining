@@ -1,0 +1,22 @@
+// This test Class was created to test the Lead Processor Batch class created for the Use Batch Apex Trailhead Challenge
+@isTest 
+public class LeadProcessorTest {
+	@testSetup
+    Static void setup()
+    {
+        List<Lead> Leads = new List<Lead>();
+        for(Integer i=0;i<200;i++)
+        {
+        	Leads.add(new Lead(LastName='Test'+i,Status='New',Company='Test Company'+i));  
+        }
+        Insert Leads;
+    }
+    @isTest static void LeadProcessorTest()
+    {
+        Test.startTest();
+        LeadProcessor lp = new LeadProcessor();
+        Id batchID = Database.executeBatch(lp);
+        Test.stopTest();
+        System.assertEquals(200, [SELECT count() FROM Lead WHERE LeadSource = 'Dreamforce'] );
+    }
+}
