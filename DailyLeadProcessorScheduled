@@ -1,0 +1,13 @@
+//Class created for Schedule jobs using apex scheduler Trailhead Challenge
+global class DailyLeadProcessor implements Schedulable {
+    global void execute(SchedulableContext ctx)
+    {
+        List<Lead> Leads = [SELECT Id, LeadSource FROM Lead WHERE LeadSource = null LIMIT 200];
+        For(Lead Lead: Leads)
+        {
+            Lead.LeadSource='Dreamforce';
+        }
+     Update Leads;
+    }
+
+}
